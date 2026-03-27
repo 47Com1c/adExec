@@ -1,6 +1,6 @@
 # ADReaper v2
 
-AD recon orchestrator for HTB / pentest labs. Wraps your entire workflow — `nmap`, `nxc`, `ldapsearch`, and `impacket` — into a single two-phase run.
+AD recon orchestrator for HTB / pentest labs. Wraps your typical entire workflow into a single two-phase run.
 
 ---
 
