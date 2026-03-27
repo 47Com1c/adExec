@@ -25,7 +25,7 @@ BANNER = r"""
 | |_| || || ||   __| >  < |  _|  | |
  \___ ||____/|_____||_/\_||____| |___|
 
-  AD Recon Orchestrator  v2.0  |  HTB Edition
+     AD Recon Orchestrator  v2.0 
 """
 
 
