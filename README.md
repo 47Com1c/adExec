@@ -1,4 +1,4 @@
-# ADReaper v2
+# adExec
 
 AD recon orchestrator for HTB / pentest labs. Wraps your typical entire workflow into a single two-phase run.
 
