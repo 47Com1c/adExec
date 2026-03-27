@@ -92,19 +92,6 @@ recon/
 
 ---
 
-## HTB machines to test on
-
-| Machine | Key findings |
-|---------|-------------|
-| Support | LDAP anonymous → description password → GenericAll abuse |
-| Forest | AS-REP roast → DCSync via WriteDACL |
-| Active | Kerberoast → SVC_TGS (GPP password in SYSVOL) |
-| Sauna | AS-REP roast → DCSync |
-| Resolve | Password in description → lateral movement |
-| Monteverde | Azure AD Connect → credential dump |
-
----
-
 ## Notes
 
 - `nxc` is the new name for `crackmapexec`. If you have the old `cme`, swap `nxc` → `cme` in `core/env.py` and the phase files.
