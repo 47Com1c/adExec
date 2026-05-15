@@ -12,6 +12,11 @@
 AD recon orchestrator for HTB / pentest labs. Wraps your typical entire workflow into a single two-phase run.
 
 ---
+## Installation
+```
+git clone https://github.com/47Com1c/adExec.git
+cd adExec/
+```
 
 ## Dependencies
 
