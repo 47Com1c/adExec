@@ -25,13 +25,27 @@ class Context:
         self.services    : dict  = {}     # port -> service string
         self.users       : list  = []     # list of str usernames
         self.shares      : list  = []     # list of str share names
+        self.domain_sid  : str   = None   # filled in by LDAP --get-sid
         self.winrm_open  : bool  = False
         self.ldap_open   : bool  = False
         self.smb_open    : bool  = False
 
+        # Step results (StepResult objects) accumulated by the engine, and
+        # run timing — both consumed by core/report.py to build report.json.
+        self.results     : list  = []
+        self.started_at  : str   = None
+        self.finished_at : str   = None
+
         # Paths
         self.target_dir  = None
         self.nmap_dir    = None
+
+    # ------------------------------------------------------------------ #
+    #  Result collection                                                   #
+    # ------------------------------------------------------------------ #
+
+    def add_result(self, result):
+        self.results.append(result)
 
     # ------------------------------------------------------------------ #
     #  Directory setup                                                     #
@@ -99,3 +113,26 @@ class Context:
 
     def ports_csv(self) -> str:
         return ",".join(str(p) for p in sorted(self.open_ports))
+
+    # ------------------------------------------------------------------ #
+    #  Derived identifiers                                                 #
+    # ------------------------------------------------------------------ #
+
+    def fqdn(self) -> str:
+        """Best-effort FQDN for Kerberos-aware tools; falls back to IP."""
+        if self.hostname and self.domain:
+            return f"{self.hostname}.{self.domain}".lower()
+        return self.domain.lower() if self.domain else self.target
+
+    def base_dn(self) -> str:
+        """DC=corp,DC=local style base DN, or '' if domain unknown."""
+        if self.domain:
+            return ",".join(f"DC={p}" for p in self.domain.split("."))
+        return ""
+
+    def ldap_auth_flags(self) -> list:
+        """ldapsearch auth flags for the current creds (user/pass only)."""
+        if self.username and self.password is not None:
+            user_dn = f"{self.username}@{self.domain}" if self.domain else self.username
+            return ["-x", "-D", user_dn, "-w", self.password]
+        return ["-x"]

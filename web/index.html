@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>adExec — recon viewer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header id="topbar">
+    <div class="brand">ad<span>Exec</span></div>
+    <select id="targetSelect" title="Target"></select>
+    <div id="meta" class="meta"></div>
+    <div class="search-wrap">
+      <input id="search" type="search" placeholder="Search all command output…" autocomplete="off">
+      <span id="searchCount" class="search-count"></span>
+    </div>
+  </header>
+
+  <section id="summary" class="summary"></section>
+
+  <main>
+    <nav id="sidebar" class="sidebar"></nav>
+    <div id="detail" class="detail"></div>
+  </main>
+
+  <div id="empty" class="empty" hidden>
+    <p>No reports found under this output directory.</p>
+    <p>Run a scan first: <code>python adexec.py -t &lt;IP&gt;</code></p>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

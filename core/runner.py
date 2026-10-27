@@ -3,6 +3,8 @@ core/runner.py — Execute shell commands, stream output to terminal,
                  optionally save to a file, and return captured output.
 """
 
+from __future__ import annotations
+
 import subprocess
 import shlex
 from pathlib import Path

@@ -1,25 +1,28 @@
 """
-core/env.py — Check that required external tools are available on PATH.
+core/env.py — Check that external tools are available on PATH.
 """
 
 import shutil
 
 REQUIRED_TOOLS = {
-    "nmap":                 "nmap",
-    "nxc":                  "netexec (nxc)",
-    "impacket-GetNPUsers":  "impacket",
-    "ldapsearch":           "ldap-utils",
+    "nmap":        "nmap",
+    "nxc":         "netexec (nxc)",
+    "ldapsearch":  "ldap-utils",
 }
 
 OPTIONAL_TOOLS = {
-    "kerbrute":           "kerbrute",
-    "evil-winrm":         "evil-winrm",
-    "bloodhound-python":  "bloodhound-python",
+    "enum4linux-ng":        "enum4linux-ng",
+    "rpcclient":            "samba-common-bin (rpcclient)",
+    "impacket-GetNPUsers":  "impacket",
+    "impacket-GetUserSPNs": "impacket",
+    "certipy":              "certipy-ad",
+    "kerbrute":             "kerbrute",
+    "bloodhound-python":    "bloodhound-python",
 }
 
 
 def check_dependencies() -> list:
-    """Return list of missing required tool labels."""
+    """Return list of missing REQUIRED tool labels."""
     return [label for binary, label in REQUIRED_TOOLS.items()
             if not shutil.which(binary)]
 

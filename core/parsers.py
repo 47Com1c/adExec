@@ -143,3 +143,51 @@ def parse_asrep_hashes(impacket_output: str) -> list:
         for line in impacket_output.splitlines()
         if line.strip().startswith("$krb5asrep$")
     ]
+
+
+def parse_kerberoast_hashes(output: str) -> list:
+    """Extract TGS-REP (Kerberoast) hash lines ($krb5tgs$...)."""
+    return [
+        line.strip()
+        for line in output.splitlines()
+        if line.strip().startswith("$krb5tgs$")
+    ]
+
+
+# ------------------------------------------------------------------ #
+#  NetExec generic helpers                                             #
+# ------------------------------------------------------------------ #
+
+def parse_nxc_users(output: str) -> list:
+    """
+    Best-effort username extraction from `nxc smb/ldap ... --users`.
+    NetExec prints a '-Username-' header then one account per line, e.g.:
+      SMB  10.10.10.10  445  DC01  Administrator   2024-... 0  ...
+    We take the first token after the DC/host column when it looks like a
+    username, skipping the header and column-label lines.
+    """
+    users = []
+    for line in output.splitlines():
+        if "-Username-" in line or "[*]" in line or "[-]" in line:
+            continue
+        m = re.search(r"\b(?:SMB|LDAP)\b\s+\S+\s+\d+\s+\S+\s+([^\s]+)", line)
+        if m:
+            candidate = m.group(1).strip()
+            if candidate and candidate not in ("[+]", "Username") \
+                    and not candidate.startswith("["):
+                users.append(candidate)
+    return list(dict.fromkeys(users))
+
+
+def parse_rpcclient_users(output: str) -> list:
+    """
+    Extract usernames from rpcclient `enumdomusers` output.
+    Lines look like: user:[administrator] rid:[0x1f4]
+    """
+    return list(dict.fromkeys(re.findall(r"user:\[([^\]]+)\]", output)))
+
+
+def parse_domain_sid(output: str) -> str:
+    """Extract the domain SID from `nxc ldap --get-sid` (S-1-5-21-...)."""
+    m = re.search(r"(S-1-5-21-\d+-\d+-\d+)", output)
+    return m.group(1) if m else None
