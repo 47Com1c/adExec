@@ -2,7 +2,7 @@
 
 from core.steps   import (Step, Finding, register,
                           SMB_OPEN, HAS_CREDS,
-                          INFO, LOW, MEDIUM, HIGH)
+                          INFO, MEDIUM, HIGH)
 from core.parsers import parse_smb_info, parse_shares, parse_rid_users, parse_nxc_users
 
 DEFAULT_SHARES = {"ADMIN$", "C$", "IPC$", "NETLOGON", "SYSVOL", "PRINT$"}
@@ -119,7 +119,7 @@ def _rid_brute(output, ctx):
         findings.append(Finding(INFO, f"RID brute found {len(users)} users → users.txt"))
         rows = [{"username": u} for u in users]
     else:
-        findings.append(Finding(LOW, "No users from RID brute — check credentials"))
+        findings.append(Finding(INFO, "No users from RID brute — check credentials"))
     return findings, rows, ["username"]
 
 

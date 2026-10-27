@@ -16,7 +16,6 @@ OPTIONAL_TOOLS = {
     "impacket-GetNPUsers":  "impacket",
     "impacket-GetUserSPNs": "impacket",
     "certipy":              "certipy-ad",
-    "kerbrute":             "kerbrute",
     "bloodhound-python":    "bloodhound-python",
 }
 
@@ -28,7 +27,7 @@ TOOL_ALIASES = {
     "impacket-GetUserSPNs": ["impacket-GetUserSPNs", "GetUserSPNs.py", "getUserSPNs.py"],
     "impacket-secretsdump": ["impacket-secretsdump", "secretsdump.py"],
     "enum4linux-ng":        ["enum4linux-ng", "enum4linux-ng.py"],
-    "certipy":              ["certipy", "certipy-ad"],
+    "certipy":              ["certipy-ad", "certipy"],
     "bloodhound-python":    ["bloodhound-python", "bloodhound-ce-python"],
 }
 

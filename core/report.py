@@ -9,7 +9,7 @@ full per-step records (command, raw output, tables) for the detail panes.
 import json
 from pathlib import Path
 
-from core.steps import all_categories
+from core.steps import all_categories, SEVERITY_LABELS
 
 SEVERITY_ORDER = ["critical", "high", "medium", "low", "info"]
 
@@ -53,6 +53,7 @@ def build_report(ctx) -> dict:
         "categories":      [c for c in all_categories()
                             if any(r.category == c for r in ctx.results)],
         "severity_counts": severity_counts,
+        "severity_labels": SEVERITY_LABELS,
         "status_counts":   status_counts,
         "findings":        findings_flat,
         "results":         results,

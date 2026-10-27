@@ -21,7 +21,7 @@ def _certipy(output, ctx):
 register(Step(
     id="certipy_find", name="certipy — find vulnerable AD CS templates",
     category="ADCS", phase=2, tool="certipy", requires=[HAS_USERPASS, HAS_DOMAIN],
-    build_cmd=lambda c: ["certipy", "find", "-u", f"{c.username}@{c.domain}",
+    build_cmd=lambda c: [c.bin("certipy"), "find", "-u", f"{c.username}@{c.domain}",
                          "-p", c.password, "-dc-ip", c.target, "-vulnerable", "-stdout"],
     save_name="certipy_find.txt", parse=_certipy, timeout=240,
 ))

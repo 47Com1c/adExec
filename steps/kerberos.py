@@ -5,6 +5,10 @@ from core.steps   import (Step, Finding, register,
                           INFO, HIGH)
 from core.parsers import parse_asrep_hashes, parse_kerberoast_hashes
 
+# Note: kerbrute is intentionally not wired in — it is not packaged on Kali
+# (needs a manual binary from ropnop/kerbrute) and its user-validation overlaps
+# with RID brute / --users. Add a Step here if you install it.
+
 
 def _asrep(output, ctx):
     hashes = parse_asrep_hashes(output)
@@ -22,13 +26,6 @@ def _kerberoast(output, ctx):
                  hint="hashcat -m 13100 <file> rockyou.txt")],
                 [{"hash": h[:80] + "..."} for h in hashes], ["hash"])
     return [Finding(INFO, "No Kerberoastable accounts found")], [], []
-
-
-def _kerbrute(output, ctx):
-    valid = [l for l in output.splitlines() if "VALID USERNAME" in l]
-    if valid:
-        return [Finding(INFO, f"kerbrute confirmed {len(valid)} valid usernames")], [], []
-    return [], [], []
 
 
 # --- AS-REP roast: NetExec LDAP (primary) + impacket (fallback) ------- #
@@ -69,14 +66,4 @@ register(Step(
                           c.impacket_target().split("@")[0]]
                          if c.username and c.password is not None else None),
     save_name="kerberoast_impacket.txt", parse=_kerberoast,
-))
-
-# --- Username validation (no lockout risk) ---------------------------- #
-
-register(Step(
-    id="kerbrute", name="kerbrute — username validation (no lockout)",
-    category="Kerberos", phase=2, tool="kerbrute", requires=[HAS_DOMAIN, HAS_USERS],
-    build_cmd=lambda c: ["kerbrute", "userenum", "--dc", c.target, "-d", c.domain,
-                         str(c.target_dir / "users.txt")],
-    save_name="kerbrute.txt", parse=_kerbrute,
 ))

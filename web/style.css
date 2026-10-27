@@ -206,8 +206,8 @@ h1.view-title { font-size: 21px; margin: 0 0 4px; letter-spacing: -.3px; }
 .finding.sev-low      { border-left: 4px solid var(--low); }
 .finding.sev-info     { border-left: 4px solid var(--info); }
 .sev-tag {
-  font: 800 10px var(--mono); text-transform: uppercase; letter-spacing: .04em;
-  padding: 4px 9px; border-radius: var(--radius-pill); height: fit-content; flex: none;
+  font: 800 10.5px var(--mono); letter-spacing: .02em; white-space: nowrap;
+  padding: 4px 10px; border-radius: var(--radius-pill); height: fit-content; flex: none;
 }
 .sev-critical .sev-tag { background: var(--crit-bg); color: var(--crit); }
 .sev-high .sev-tag     { background: var(--high-bg); color: var(--high); }

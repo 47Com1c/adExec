@@ -12,7 +12,7 @@ For every step the engine:
 import time
 
 from core.runner import Runner
-from core.steps  import StepResult, steps_for_phase, _LOUD
+from core.steps  import StepResult, steps_for_phase, _LOUD, SEVERITY_LABELS
 from core.env    import tool_available
 
 
@@ -95,8 +95,9 @@ class Engine:
 
         # 6. echo findings
         for f in findings:
+            label = SEVERITY_LABELS.get(f.severity, f.severity)
             if f.severity in _LOUD:
-                term.finding(f"[{f.severity.upper()}] {f.text}")
+                term.finding(f"[{label}] {f.text}")
             else:
                 term.info(f.text)
             if f.hint:

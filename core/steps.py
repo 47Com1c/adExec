@@ -29,6 +29,18 @@ INFO     = "info"
 # Severities that deserve the [FIND] highlight in the terminal.
 _LOUD = {CRITICAL, HIGH, MEDIUM}
 
+# Display labels. Internally we keep the ordered keys above (they drive sorting
+# and colour); the UI and terminal show these words instead. They are tiers of
+# "how much this deserves your attention", NOT vulnerability severities — an
+# enumeration result is not a confirmed vuln.
+SEVERITY_LABELS = {
+    CRITICAL: "Tier 1",
+    HIGH:     "Tier 2",
+    MEDIUM:   "Tier 3",
+    LOW:      "Tier 3",
+    INFO:     "Context",
+}
+
 
 @dataclass
 class Finding:

@@ -11,8 +11,17 @@ const STATUS_LABEL = {
   skipped:     "skipped",
 };
 
+const FALLBACK_LABELS = {
+  critical: "Tier 1", high: "Tier 2", medium: "Tier 3", low: "Tier 3", info: "Context",
+};
+
 const state = { report: null, view: FINDINGS_VIEW, query: "" };
 const $ = (sel) => document.querySelector(sel);
+
+function sevLabel(key) {
+  return (state.report && state.report.severity_labels && state.report.severity_labels[key])
+      || FALLBACK_LABELS[key] || key;
+}
 
 // ------------------------------------------------------------------ //
 //  Theme                                                               //
@@ -90,7 +99,7 @@ function renderSummary() {
   const r = state.report, sc = r.severity_counts || {}, st = r.status_counts || {};
   const chips = [];
   SEV_ORDER.forEach((s) => {
-    if (sc[s]) chips.push(`<span class="chip sev-${s}"><span class="dot"></span><b>${sc[s]}</b> ${s}</span>`);
+    if (sc[s]) chips.push(`<span class="chip sev-${s}"><span class="dot"></span><b>${sc[s]}</b> ${esc(sevLabel(s))}</span>`);
   });
   // neutral, clearly-separate run facts
   chips.push(`<span class="chip ghost"><b>${(r.open_ports||[]).length}</b> ports</span>`);
@@ -180,7 +189,7 @@ function renderDetail() {
 
 function findingCard(f) {
   return `<div class="finding sev-${f.severity}">
-    <span class="sev-tag">${f.severity}</span>
+    <span class="sev-tag">${esc(sevLabel(f.severity))}</span>
     <div class="f-body">
       <div class="f-text">${hl(f.text)}</div>
       ${f.hint ? `<div class="f-hint">→ ${hl(f.hint)}</div>` : ""}
