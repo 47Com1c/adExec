@@ -189,13 +189,6 @@ register(Step(
 ))
 
 register(Step(
-    id="smb_sessions", name="NetExec — active sessions",
-    category="SMB", phase=2, tool="nxc", requires=[HAS_CREDS],
-    build_cmd=lambda c: ["nxc", "smb", c.target, *c.nxc_auth_flags(), "--sessions"],
-    save_name="smb_sessions.txt",
-))
-
-register(Step(
     id="smb_gpp", name="NetExec — GPP password search",
     category="SMB", phase=2, tool="nxc", requires=[HAS_CREDS],
     build_cmd=lambda c: ["nxc", "smb", c.target, *c.nxc_auth_flags(), "-M", "gpp_password"],

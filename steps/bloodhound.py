@@ -13,16 +13,17 @@ def _bloodhound(output, ctx):
 
 
 def _build(ctx):
-    bh_dir = ctx.target_dir / "bloodhound"
-    bh_dir.mkdir(exist_ok=True)
-    return ["bloodhound-python", "-d", ctx.domain, "-u", ctx.username,
-            "-p", ctx.password, "-ns", ctx.target, "-c", "All", "--zip",
-            "--outputdir", str(bh_dir)]
+    # bloodhound-python has no --outputdir in many versions; it writes the zip
+    # to the current working directory, so we run it from the bloodhound dir.
+    (ctx.target_dir / "bloodhound").mkdir(exist_ok=True)
+    return [ctx.bin("bloodhound-python"), "-d", ctx.domain, "-u", ctx.username,
+            "-p", ctx.password, "-ns", ctx.target, "-c", "All", "--zip"]
 
 
 register(Step(
     id="bloodhound", name="BloodHound — full collection (-c All)",
     category="BloodHound", phase=2, tool="bloodhound-python",
     requires=[HAS_USERPASS, HAS_DOMAIN],
-    build_cmd=_build, save_name="bloodhound_raw.txt", parse=_bloodhound, timeout=400,
+    build_cmd=_build, cwd=lambda c: c.target_dir / "bloodhound",
+    save_name="bloodhound_raw.txt", parse=_bloodhound, timeout=400,
 ))

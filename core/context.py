@@ -47,6 +47,11 @@ class Context:
     def add_result(self, result):
         self.results.append(result)
 
+    def bin(self, logical_name: str) -> str:
+        """Resolve a tool's actual binary name (handles install variants)."""
+        from core.env import resolve_tool
+        return resolve_tool(logical_name) or logical_name
+
     # ------------------------------------------------------------------ #
     #  Directory setup                                                     #
     # ------------------------------------------------------------------ #

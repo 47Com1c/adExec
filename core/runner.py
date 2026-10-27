@@ -15,7 +15,7 @@ class Runner:
         self.term = term
 
     def run(self, cmd: list | str, save_to: Path = None,
-            env=None, timeout=300) -> tuple[int, str]:
+            env=None, timeout=300, cwd=None) -> tuple[int, str]:
         """
         Run a command.
         - Prints the command before executing.
@@ -38,6 +38,7 @@ class Runner:
                 stderr=subprocess.STDOUT,
                 text=True,
                 env=env,
+                cwd=str(cwd) if cwd else None,
             )
             for line in proc.stdout:
                 stripped = line.rstrip()

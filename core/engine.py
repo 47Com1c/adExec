@@ -63,8 +63,9 @@ class Engine:
 
         # 4. run it
         save = (ctx.target_dir / step.save_name) if step.save_name else None
+        cwd  = step.cwd(ctx) if step.cwd else None
         start = time.time()
-        rc, output = self.runner.run(cmd, save_to=save, timeout=step.timeout)
+        rc, output = self.runner.run(cmd, save_to=save, timeout=step.timeout, cwd=cwd)
         duration = round(time.time() - start, 2)
 
         # 5. parse
@@ -75,7 +76,7 @@ class Engine:
             except Exception as e:       # noqa: BLE001
                 term.warn(f"parser error in {step.id}: {e}")
 
-        status = "ok" if rc == 0 else "error"
+        status = self._classify(rc, output)
         result = StepResult(
             id         = step.id,
             name       = step.name,
@@ -102,6 +103,17 @@ class Engine:
                 term.info(f"  → {f.hint}")
 
     # ------------------------------------------------------------------ #
+
+    @staticmethod
+    def _classify(rc: int, output: str) -> str:
+        """Distinguish a real failure from a tool/version flag mismatch."""
+        if rc == 0:
+            return "ok"
+        low = output.lower()
+        if "unrecognized arguments" in low or "no such option" in low \
+                or "invalid choice" in low:
+            return "unsupported"
+        return "error"
 
     @staticmethod
     def _blank(step, status: str, note: str) -> StepResult:

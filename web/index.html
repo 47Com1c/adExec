@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>adExec — recon viewer</title>
+  <title>adExec</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,9 +12,12 @@
     <select id="targetSelect" title="Target"></select>
     <div id="meta" class="meta"></div>
     <div class="search-wrap">
-      <input id="search" type="search" placeholder="Search all command output…" autocomplete="off">
+      <input id="search" type="search" placeholder="Search output…" autocomplete="off">
       <span id="searchCount" class="search-count"></span>
     </div>
+    <button id="themeToggle" class="theme-toggle" title="Toggle dark / light">
+      <span class="t-icon"></span>
+    </button>
   </header>
 
   <section id="summary" class="summary"></section>
@@ -25,8 +28,11 @@
   </main>
 
   <div id="empty" class="empty" hidden>
-    <p>No reports found under this output directory.</p>
-    <p>Run a scan first: <code>python adexec.py -t &lt;IP&gt;</code></p>
+    <div class="empty-card">
+      <div class="empty-emoji">🫥</div>
+      <p>No reports here yet.</p>
+      <p class="muted">Run a scan first: <code>python adexec.py -t &lt;IP&gt;</code></p>
+    </div>
   </div>
 
   <script src="app.js"></script>

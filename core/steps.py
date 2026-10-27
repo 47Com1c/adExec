@@ -78,6 +78,7 @@ class Step:
     parse: Optional[ParseFn] = None
     save_name: Optional[str] = None    # filename under target_dir for raw output
     timeout: int = 300
+    cwd: Optional[Callable] = None     # ctx -> working directory for the command
 
 
 # ------------------------------------------------------------------ #
